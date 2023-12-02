@@ -1,14 +1,8 @@
 # -*- coding: utf-8 -*-
-import os
 from datetime import datetime
-from dotenv import load_dotenv
 from fastapi import FastAPI
 from lib.PostgreSQL import Database
 
-
-
-load_dotenv()
-API_KEY = os.getenv("API_KEY")
 
 DB = Database('news')
 
@@ -35,21 +29,7 @@ async def add_user(request: dict):
     data = DB.add_user(user, key)
     return {"response": str(data)}
 
-# # Эту функцию не стоит подключать, только для проверки!!!
-# @app.get("/user")
-# async def check_user(request: dict):
-#     # request 
-#     # json_data = {
-#     #     "user": 'username',
-#     # }
-#     # Возвращается ключ пользователя
-#     user = request['user']
-#     data = DB.check_user(user)
-#     if data != None:
-#         return {"response": data}
-#     else:
-#         return {"response": "error"}
-    
+   
 @app.delete("/user")
 async def delete_user(request: dict):
     pass
@@ -73,7 +53,6 @@ async def create_table(request: dict):
     user = request['user']
     table = request['table']
     key = request['key']
-    
     key_baza = DB.check_user(user)
     if key == key_baza:
         data = DB.create_table(f"{user}_{table}")
@@ -133,11 +112,11 @@ async def add_data(request: dict):
             views INTEGER,
             rel_size FLOAT,
             message_photo VARCHAR(255)[],
-            sourse_photo VARCHAR(255)[],
+            source_photo VARCHAR(255)[],
             photo BYTEA,
             container_photo VARCHAR(255),
             message_video VARCHAR(255)[],
-            sourse_video VARCHAR(255)[],
+            source_video VARCHAR(255)[],
             video BYTEA,
             container_video VARCHAR(255),
             difference_time FLOAT,
@@ -182,7 +161,7 @@ async def get_data(request: dict):
     else:
         return {"response": "Ошибка авторизации"}
     
-@app.patch("/data")
+@app.put("/data")
 async def update_data(request: dict):
     """
     request
@@ -306,7 +285,7 @@ async def create_tag(request: dict):
     else:
         return {"response": "Ошибка авторизации"}
 
-@app.patch("/tag")
+@app.put("/tag")
 async def update_tag(request: dict):
     """
     request
@@ -402,7 +381,7 @@ async def create_source(request: dict):
     else:
         return {"response": "Ошибка авторизации"}
 
-@app.patch("/source")
+@app.put("/source")
 async def update_source(request: dict):
     """
     request
@@ -498,7 +477,7 @@ async def create_subscriber(request: dict):
     else:
         return {"response": "Ошибка авторизации"}
 
-@app.patch("/subscriber")
+@app.put("/subscriber")
 async def update_subscriber(request: dict):
     """
     request
